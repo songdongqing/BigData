@@ -35,7 +35,7 @@ import java.util.Map;
  * @version    1.0</br>
  * @update     03/14/2019 16:00
  */
-public class Main {
+public class MyMain {
 
     public static String LOGIN_URL = "https://github.com/login";
     public static String USER_AGENT = "User-Agent";
@@ -46,7 +46,7 @@ public class Main {
 
 //        h1("深圳", "数据分析","1"); // 模拟登陆github的用户名和密码
 //          h2("深圳", "数据分析","1");
-        h3("深圳", "数据分析","1");
+        h3("深圳", "数据分析",1);
     }
 
 
@@ -132,7 +132,7 @@ public class Main {
         System.out.println(doc3.body().toString());
     }
 
-    public static void h3(String city, String position,String pageNumber) throws Exception {
+    public static void h3(String city, String position,int pageNumber) throws Exception {
 
         String url1 = "https://a.lagou.com/collect";
 
