@@ -18,6 +18,8 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.ScriptResult;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.Cookie;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -27,6 +29,9 @@ import org.jsoup.nodes.Document;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @since      crawler(datasnatch) version(1.0)</br>
@@ -46,7 +51,9 @@ public class Main {
 
 //        h1("深圳", "数据分析","1"); // 模拟登陆github的用户名和密码
 //          h2("深圳", "数据分析","1");
-        h3("深圳", "数据分析","1");
+//        for (int i =1 ;i<=30;i++){
+            h3("深圳", "数据分析",String.valueOf(1));
+//        }
     }
 
 
@@ -138,7 +145,7 @@ public class Main {
 
         Connection connection1 = Jsoup.connect(url1)
                 .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
-                .timeout(10000).ignoreContentType(true)
+                .timeout(20000).ignoreContentType(true)
                 .ignoreHttpErrors(true)  ;
         Response rs1 = connection1.execute();
         System.out.println(rs1.body());
@@ -157,6 +164,9 @@ public class Main {
         Map<String, String>  cookies = rs2.cookies();
 
 
+       LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+        java.util.logging.Logger.getLogger("org.apache").setLevel(Level.OFF);
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
 
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
         //启动cookie
@@ -172,9 +182,10 @@ public class Main {
         HtmlPage page = webClient.getPage(url2);
         webClient.getOptions().setTimeout(10000);
         webClient.waitForBackgroundJavaScript(4000);
+
         page.executeJavaScript(rs2.body());
 
-        java.util.Set<com.gargoylesoftware.htmlunit.util.Cookie> cookiesTemmp =
+        Set<Cookie> cookiesTemmp =
                 webClient.getCookieManager().getCookies();
         //观察一下cookie
         cookiesTemmp.stream().forEach(item -> {
