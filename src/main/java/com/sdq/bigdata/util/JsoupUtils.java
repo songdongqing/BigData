@@ -34,7 +34,7 @@ public class JsoupUtils {
     public  static Map<String,String> cookies;
 
     public static void main(String[] args) throws Exception {
-          IPUtils.getIpAddress();
+          //IPUtils.getIpAddress();
 
           List<Result> results = new ArrayList<>();
           int pageNumber = 1;

@@ -11,7 +11,7 @@ public class Result {
     private Date lastLogin;
     private String education;
     private String jobNature;
-    private boolean famousCompany;
+    private boolean famousCompany;   //
     private String companyShortName;
     private String salary;
     private String secondType;
@@ -27,7 +27,7 @@ public class Result {
     private String stationname;
     private String linestaion;
     private double matchScore;
-    private long companyId;
+    private Integer companyId;
     private int newScore;
     private String district;
     private String financeStage;
@@ -40,14 +40,14 @@ public class Result {
     private String positionName;
     private int isSchoolJob;
     private List<String> aggregatePositionIds;
-    private long publisherId;
+    private Integer publisherId;
     private int resumeProcessDay;
     private String thirdType;
     private String companyLogo;
     private List<String> positionLables;
     private String firstType;
     private String formatCreateTime;
-    private long positionId;
+    private Integer positionId;
     private Date createTime;
     private int approve;
     private String industryField;

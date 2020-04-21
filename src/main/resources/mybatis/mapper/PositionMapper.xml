@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdq.bigdata.mapper.PositionMapper">
+  <resultMap id="BaseResultMap" type="com.sdq.bigdata.entity.Position">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="last_login" jdbcType="DATE" property="lastLogin" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="job_nature" jdbcType="VARCHAR" property="jobNature" />
+    <result column="famous_company" jdbcType="TINYINT" property="famousCompany" />
+    <result column="company_short_name" jdbcType="VARCHAR" property="companyShortName" />
+    <result column="salary" jdbcType="VARCHAR" property="salary" />
+    <result column="second_type" jdbcType="VARCHAR" property="secondType" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="app_show" jdbcType="INTEGER" property="appShow" />
+    <result column="company_full_name" jdbcType="VARCHAR" property="companyFullName" />
+    <result column="industry_lables_str" jdbcType="VARCHAR" property="industryLablesStr" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="business_zones_str" jdbcType="VARCHAR" property="businessZonesStr" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="pc_show" jdbcType="INTEGER" property="pcShow" />
+    <result column="company_size" jdbcType="VARCHAR" property="companySize" />
+    <result column="stationname" jdbcType="VARCHAR" property="stationname" />
+    <result column="linestaion" jdbcType="VARCHAR" property="linestaion" />
+    <result column="match_score" jdbcType="DOUBLE" property="matchScore" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="new_score" jdbcType="INTEGER" property="newScore" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="finance_stage" jdbcType="VARCHAR" property="financeStage" />
+    <result column="is_hot_hire" jdbcType="INTEGER" property="isHotHire" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="deliver" jdbcType="INTEGER" property="deliver" />
+    <result column="skill_lables_str" jdbcType="VARCHAR" property="skillLablesStr" />
+    <result column="position_advantage" jdbcType="VARCHAR" property="positionAdvantage" />
+    <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+    <result column="is_school_job" jdbcType="INTEGER" property="isSchoolJob" />
+    <result column="aggregate_position_ids_str" jdbcType="VARCHAR" property="aggregatePositionIdsStr" />
+    <result column="publisher_id" jdbcType="INTEGER" property="publisherId" />
+    <result column="resume_process_day" jdbcType="INTEGER" property="resumeProcessDay" />
+    <result column="third_type" jdbcType="VARCHAR" property="thirdType" />
+    <result column="company_logo" jdbcType="VARCHAR" property="companyLogo" />
+    <result column="position_lables_str" jdbcType="VARCHAR" property="positionLablesStr" />
+    <result column="first_type" jdbcType="VARCHAR" property="firstType" />
+    <result column="format_create_time" jdbcType="VARCHAR" property="formatCreateTime" />
+    <result column="position_id" jdbcType="INTEGER" property="positionId" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="approve" jdbcType="INTEGER" property="approve" />
+    <result column="industry_field" jdbcType="VARCHAR" property="industryField" />
+    <result column="company_label_list_str" jdbcType="VARCHAR" property="companyLabelListStr" />
+    <result column="resume_process_rate" jdbcType="INTEGER" property="resumeProcessRate" />
+    <result column="work_year" jdbcType="VARCHAR" property="workYear" />
+    <result column="im_state" jdbcType="VARCHAR" property="imState" />
+    <result column="subwayline" jdbcType="VARCHAR" property="subwayline" />
+    <result column="ad_word" jdbcType="INTEGER" property="adWord" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, last_login, education, job_nature, famous_company, company_short_name, salary,
+    second_type, score, app_show, company_full_name, industry_lables_str, longitude,
+    business_zones_str, count, pc_show, company_size, stationname, linestaion, match_score,
+    company_id, new_score, district, finance_stage, is_hot_hire, city, latitude, deliver,
+    skill_lables_str, position_advantage, position_name, is_school_job, aggregate_position_ids_str,
+    publisher_id, resume_process_day, third_type, company_logo, position_lables_str,
+    first_type, format_create_time, position_id, create_time, approve, industry_field,
+    company_label_list_str, resume_process_rate, work_year, im_state, subwayline, ad_word
+  </sql>
+  <select id="selectByExample" parameterType="com.sdq.bigdata.entity.PositionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from position
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from position
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from position
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.sdq.bigdata.entity.PositionExample">
+    delete from position
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.sdq.bigdata.entity.Position">
+    insert into position (id, last_login, education,
+      job_nature, famous_company, company_short_name,
+      salary, second_type, score,
+      app_show, company_full_name, industry_lables_str,
+      longitude, business_zones_str, count,
+      pc_show, company_size, stationname,
+      linestaion, match_score, company_id,
+      new_score, district, finance_stage,
+      is_hot_hire, city, latitude,
+      deliver, skill_lables_str, position_advantage,
+      position_name, is_school_job, aggregate_position_ids_str,
+      publisher_id, resume_process_day, third_type,
+      company_logo, position_lables_str, first_type,
+      format_create_time, position_id, create_time,
+      approve, industry_field, company_label_list_str,
+      resume_process_rate, work_year, im_state,
+      subwayline, ad_word)
+    values (#{id,jdbcType=VARCHAR}, #{lastLogin,jdbcType=DATE}, #{education,jdbcType=VARCHAR},
+      #{jobNature,jdbcType=VARCHAR}, #{famousCompany,jdbcType=TINYINT}, #{companyShortName,jdbcType=VARCHAR},
+      #{salary,jdbcType=VARCHAR}, #{secondType,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER},
+      #{appShow,jdbcType=INTEGER}, #{companyFullName,jdbcType=VARCHAR}, #{industryLablesStr,jdbcType=VARCHAR},
+      #{longitude,jdbcType=VARCHAR}, #{businessZonesStr,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER},
+      #{pcShow,jdbcType=INTEGER}, #{companySize,jdbcType=VARCHAR}, #{stationname,jdbcType=VARCHAR},
+      #{linestaion,jdbcType=VARCHAR}, #{matchScore,jdbcType=DOUBLE}, #{companyId,jdbcType=INTEGER},
+      #{newScore,jdbcType=INTEGER}, #{district,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR},
+      #{isHotHire,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR},
+      #{deliver,jdbcType=INTEGER}, #{skillLablesStr,jdbcType=VARCHAR}, #{positionAdvantage,jdbcType=VARCHAR},
+      #{positionName,jdbcType=VARCHAR}, #{isSchoolJob,jdbcType=INTEGER}, #{aggregatePositionIdsStr,jdbcType=VARCHAR},
+      #{publisherId,jdbcType=INTEGER}, #{resumeProcessDay,jdbcType=INTEGER}, #{thirdType,jdbcType=VARCHAR},
+      #{companyLogo,jdbcType=VARCHAR}, #{positionLablesStr,jdbcType=VARCHAR}, #{firstType,jdbcType=VARCHAR},
+      #{formatCreateTime,jdbcType=VARCHAR}, #{positionId,jdbcType=INTEGER}, #{createTime,jdbcType=DATE},
+      #{approve,jdbcType=INTEGER}, #{industryField,jdbcType=VARCHAR}, #{companyLabelListStr,jdbcType=VARCHAR},
+      #{resumeProcessRate,jdbcType=INTEGER}, #{workYear,jdbcType=VARCHAR}, #{imState,jdbcType=VARCHAR},
+      #{subwayline,jdbcType=VARCHAR}, #{adWord,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sdq.bigdata.entity.Position">
+    insert into position
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="lastLogin != null">
+        last_login,
+      </if>
+      <if test="education != null">
+        education,
+      </if>
+      <if test="jobNature != null">
+        job_nature,
+      </if>
+      <if test="famousCompany != null">
+        famous_company,
+      </if>
+      <if test="companyShortName != null">
+        company_short_name,
+      </if>
+      <if test="salary != null">
+        salary,
+      </if>
+      <if test="secondType != null">
+        second_type,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="appShow != null">
+        app_show,
+      </if>
+      <if test="companyFullName != null">
+        company_full_name,
+      </if>
+      <if test="industryLablesStr != null">
+        industry_lables_str,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="businessZonesStr != null">
+        business_zones_str,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="pcShow != null">
+        pc_show,
+      </if>
+      <if test="companySize != null">
+        company_size,
+      </if>
+      <if test="stationname != null">
+        stationname,
+      </if>
+      <if test="linestaion != null">
+        linestaion,
+      </if>
+      <if test="matchScore != null">
+        match_score,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="newScore != null">
+        new_score,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="financeStage != null">
+        finance_stage,
+      </if>
+      <if test="isHotHire != null">
+        is_hot_hire,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="deliver != null">
+        deliver,
+      </if>
+      <if test="skillLablesStr != null">
+        skill_lables_str,
+      </if>
+      <if test="positionAdvantage != null">
+        position_advantage,
+      </if>
+      <if test="positionName != null">
+        position_name,
+      </if>
+      <if test="isSchoolJob != null">
+        is_school_job,
+      </if>
+      <if test="aggregatePositionIdsStr != null">
+        aggregate_position_ids_str,
+      </if>
+      <if test="publisherId != null">
+        publisher_id,
+      </if>
+      <if test="resumeProcessDay != null">
+        resume_process_day,
+      </if>
+      <if test="thirdType != null">
+        third_type,
+      </if>
+      <if test="companyLogo != null">
+        company_logo,
+      </if>
+      <if test="positionLablesStr != null">
+        position_lables_str,
+      </if>
+      <if test="firstType != null">
+        first_type,
+      </if>
+      <if test="formatCreateTime != null">
+        format_create_time,
+      </if>
+      <if test="positionId != null">
+        position_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="approve != null">
+        approve,
+      </if>
+      <if test="industryField != null">
+        industry_field,
+      </if>
+      <if test="companyLabelListStr != null">
+        company_label_list_str,
+      </if>
+      <if test="resumeProcessRate != null">
+        resume_process_rate,
+      </if>
+      <if test="workYear != null">
+        work_year,
+      </if>
+      <if test="imState != null">
+        im_state,
+      </if>
+      <if test="subwayline != null">
+        subwayline,
+      </if>
+      <if test="adWord != null">
+        ad_word,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogin != null">
+        #{lastLogin,jdbcType=DATE},
+      </if>
+      <if test="education != null">
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNature != null">
+        #{jobNature,jdbcType=VARCHAR},
+      </if>
+      <if test="famousCompany != null">
+        #{famousCompany,jdbcType=TINYINT},
+      </if>
+      <if test="companyShortName != null">
+        #{companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="secondType != null">
+        #{secondType,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="appShow != null">
+        #{appShow,jdbcType=INTEGER},
+      </if>
+      <if test="companyFullName != null">
+        #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryLablesStr != null">
+        #{industryLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="businessZonesStr != null">
+        #{businessZonesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="pcShow != null">
+        #{pcShow,jdbcType=INTEGER},
+      </if>
+      <if test="companySize != null">
+        #{companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="stationname != null">
+        #{stationname,jdbcType=VARCHAR},
+      </if>
+      <if test="linestaion != null">
+        #{linestaion,jdbcType=VARCHAR},
+      </if>
+      <if test="matchScore != null">
+        #{matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="newScore != null">
+        #{newScore,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="financeStage != null">
+        #{financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="isHotHire != null">
+        #{isHotHire,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="deliver != null">
+        #{deliver,jdbcType=INTEGER},
+      </if>
+      <if test="skillLablesStr != null">
+        #{skillLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="positionAdvantage != null">
+        #{positionAdvantage,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null">
+        #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSchoolJob != null">
+        #{isSchoolJob,jdbcType=INTEGER},
+      </if>
+      <if test="aggregatePositionIdsStr != null">
+        #{aggregatePositionIdsStr,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherId != null">
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="resumeProcessDay != null">
+        #{resumeProcessDay,jdbcType=INTEGER},
+      </if>
+      <if test="thirdType != null">
+        #{thirdType,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null">
+        #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="positionLablesStr != null">
+        #{positionLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="firstType != null">
+        #{firstType,jdbcType=VARCHAR},
+      </if>
+      <if test="formatCreateTime != null">
+        #{formatCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null">
+        #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="approve != null">
+        #{approve,jdbcType=INTEGER},
+      </if>
+      <if test="industryField != null">
+        #{industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLabelListStr != null">
+        #{companyLabelListStr,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeProcessRate != null">
+        #{resumeProcessRate,jdbcType=INTEGER},
+      </if>
+      <if test="workYear != null">
+        #{workYear,jdbcType=VARCHAR},
+      </if>
+      <if test="imState != null">
+        #{imState,jdbcType=VARCHAR},
+      </if>
+      <if test="subwayline != null">
+        #{subwayline,jdbcType=VARCHAR},
+      </if>
+      <if test="adWord != null">
+        #{adWord,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.sdq.bigdata.entity.PositionExample" resultType="java.lang.Long">
+    select count(*) from position
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update position
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLogin != null">
+        last_login = #{record.lastLogin,jdbcType=DATE},
+      </if>
+      <if test="record.education != null">
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jobNature != null">
+        job_nature = #{record.jobNature,jdbcType=VARCHAR},
+      </if>
+      <if test="record.famousCompany != null">
+        famous_company = #{record.famousCompany,jdbcType=TINYINT},
+      </if>
+      <if test="record.companyShortName != null">
+        company_short_name = #{record.companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salary != null">
+        salary = #{record.salary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondType != null">
+        second_type = #{record.secondType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.appShow != null">
+        app_show = #{record.appShow,jdbcType=INTEGER},
+      </if>
+      <if test="record.companyFullName != null">
+        company_full_name = #{record.companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industryLablesStr != null">
+        industry_lables_str = #{record.industryLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessZonesStr != null">
+        business_zones_str = #{record.businessZonesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.count != null">
+        count = #{record.count,jdbcType=INTEGER},
+      </if>
+      <if test="record.pcShow != null">
+        pc_show = #{record.pcShow,jdbcType=INTEGER},
+      </if>
+      <if test="record.companySize != null">
+        company_size = #{record.companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationname != null">
+        stationname = #{record.stationname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linestaion != null">
+        linestaion = #{record.linestaion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.matchScore != null">
+        match_score = #{record.matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="record.companyId != null">
+        company_id = #{record.companyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newScore != null">
+        new_score = #{record.newScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.financeStage != null">
+        finance_stage = #{record.financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isHotHire != null">
+        is_hot_hire = #{record.isHotHire,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliver != null">
+        deliver = #{record.deliver,jdbcType=INTEGER},
+      </if>
+      <if test="record.skillLablesStr != null">
+        skill_lables_str = #{record.skillLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionAdvantage != null">
+        position_advantage = #{record.positionAdvantage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionName != null">
+        position_name = #{record.positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSchoolJob != null">
+        is_school_job = #{record.isSchoolJob,jdbcType=INTEGER},
+      </if>
+      <if test="record.aggregatePositionIdsStr != null">
+        aggregate_position_ids_str = #{record.aggregatePositionIdsStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publisherId != null">
+        publisher_id = #{record.publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="record.resumeProcessDay != null">
+        resume_process_day = #{record.resumeProcessDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.thirdType != null">
+        third_type = #{record.thirdType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyLogo != null">
+        company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionLablesStr != null">
+        position_lables_str = #{record.positionLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstType != null">
+        first_type = #{record.firstType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formatCreateTime != null">
+        format_create_time = #{record.formatCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positionId != null">
+        position_id = #{record.positionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=DATE},
+      </if>
+      <if test="record.approve != null">
+        approve = #{record.approve,jdbcType=INTEGER},
+      </if>
+      <if test="record.industryField != null">
+        industry_field = #{record.industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyLabelListStr != null">
+        company_label_list_str = #{record.companyLabelListStr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resumeProcessRate != null">
+        resume_process_rate = #{record.resumeProcessRate,jdbcType=INTEGER},
+      </if>
+      <if test="record.workYear != null">
+        work_year = #{record.workYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imState != null">
+        im_state = #{record.imState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subwayline != null">
+        subwayline = #{record.subwayline,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adWord != null">
+        ad_word = #{record.adWord,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update position
+    set id = #{record.id,jdbcType=VARCHAR},
+      last_login = #{record.lastLogin,jdbcType=DATE},
+      education = #{record.education,jdbcType=VARCHAR},
+      job_nature = #{record.jobNature,jdbcType=VARCHAR},
+      famous_company = #{record.famousCompany,jdbcType=TINYINT},
+      company_short_name = #{record.companyShortName,jdbcType=VARCHAR},
+      salary = #{record.salary,jdbcType=VARCHAR},
+      second_type = #{record.secondType,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=INTEGER},
+      app_show = #{record.appShow,jdbcType=INTEGER},
+      company_full_name = #{record.companyFullName,jdbcType=VARCHAR},
+      industry_lables_str = #{record.industryLablesStr,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      business_zones_str = #{record.businessZonesStr,jdbcType=VARCHAR},
+      count = #{record.count,jdbcType=INTEGER},
+      pc_show = #{record.pcShow,jdbcType=INTEGER},
+      company_size = #{record.companySize,jdbcType=VARCHAR},
+      stationname = #{record.stationname,jdbcType=VARCHAR},
+      linestaion = #{record.linestaion,jdbcType=VARCHAR},
+      match_score = #{record.matchScore,jdbcType=DOUBLE},
+      company_id = #{record.companyId,jdbcType=INTEGER},
+      new_score = #{record.newScore,jdbcType=INTEGER},
+      district = #{record.district,jdbcType=VARCHAR},
+      finance_stage = #{record.financeStage,jdbcType=VARCHAR},
+      is_hot_hire = #{record.isHotHire,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      deliver = #{record.deliver,jdbcType=INTEGER},
+      skill_lables_str = #{record.skillLablesStr,jdbcType=VARCHAR},
+      position_advantage = #{record.positionAdvantage,jdbcType=VARCHAR},
+      position_name = #{record.positionName,jdbcType=VARCHAR},
+      is_school_job = #{record.isSchoolJob,jdbcType=INTEGER},
+      aggregate_position_ids_str = #{record.aggregatePositionIdsStr,jdbcType=VARCHAR},
+      publisher_id = #{record.publisherId,jdbcType=INTEGER},
+      resume_process_day = #{record.resumeProcessDay,jdbcType=INTEGER},
+      third_type = #{record.thirdType,jdbcType=VARCHAR},
+      company_logo = #{record.companyLogo,jdbcType=VARCHAR},
+      position_lables_str = #{record.positionLablesStr,jdbcType=VARCHAR},
+      first_type = #{record.firstType,jdbcType=VARCHAR},
+      format_create_time = #{record.formatCreateTime,jdbcType=VARCHAR},
+      position_id = #{record.positionId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=DATE},
+      approve = #{record.approve,jdbcType=INTEGER},
+      industry_field = #{record.industryField,jdbcType=VARCHAR},
+      company_label_list_str = #{record.companyLabelListStr,jdbcType=VARCHAR},
+      resume_process_rate = #{record.resumeProcessRate,jdbcType=INTEGER},
+      work_year = #{record.workYear,jdbcType=VARCHAR},
+      im_state = #{record.imState,jdbcType=VARCHAR},
+      subwayline = #{record.subwayline,jdbcType=VARCHAR},
+      ad_word = #{record.adWord,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sdq.bigdata.entity.Position">
+    update position
+    <set>
+      <if test="lastLogin != null">
+        last_login = #{lastLogin,jdbcType=DATE},
+      </if>
+      <if test="education != null">
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNature != null">
+        job_nature = #{jobNature,jdbcType=VARCHAR},
+      </if>
+      <if test="famousCompany != null">
+        famous_company = #{famousCompany,jdbcType=TINYINT},
+      </if>
+      <if test="companyShortName != null">
+        company_short_name = #{companyShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null">
+        salary = #{salary,jdbcType=VARCHAR},
+      </if>
+      <if test="secondType != null">
+        second_type = #{secondType,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="appShow != null">
+        app_show = #{appShow,jdbcType=INTEGER},
+      </if>
+      <if test="companyFullName != null">
+        company_full_name = #{companyFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="industryLablesStr != null">
+        industry_lables_str = #{industryLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="businessZonesStr != null">
+        business_zones_str = #{businessZonesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="pcShow != null">
+        pc_show = #{pcShow,jdbcType=INTEGER},
+      </if>
+      <if test="companySize != null">
+        company_size = #{companySize,jdbcType=VARCHAR},
+      </if>
+      <if test="stationname != null">
+        stationname = #{stationname,jdbcType=VARCHAR},
+      </if>
+      <if test="linestaion != null">
+        linestaion = #{linestaion,jdbcType=VARCHAR},
+      </if>
+      <if test="matchScore != null">
+        match_score = #{matchScore,jdbcType=DOUBLE},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="newScore != null">
+        new_score = #{newScore,jdbcType=INTEGER},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="financeStage != null">
+        finance_stage = #{financeStage,jdbcType=VARCHAR},
+      </if>
+      <if test="isHotHire != null">
+        is_hot_hire = #{isHotHire,jdbcType=INTEGER},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="deliver != null">
+        deliver = #{deliver,jdbcType=INTEGER},
+      </if>
+      <if test="skillLablesStr != null">
+        skill_lables_str = #{skillLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="positionAdvantage != null">
+        position_advantage = #{positionAdvantage,jdbcType=VARCHAR},
+      </if>
+      <if test="positionName != null">
+        position_name = #{positionName,jdbcType=VARCHAR},
+      </if>
+      <if test="isSchoolJob != null">
+        is_school_job = #{isSchoolJob,jdbcType=INTEGER},
+      </if>
+      <if test="aggregatePositionIdsStr != null">
+        aggregate_position_ids_str = #{aggregatePositionIdsStr,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherId != null">
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="resumeProcessDay != null">
+        resume_process_day = #{resumeProcessDay,jdbcType=INTEGER},
+      </if>
+      <if test="thirdType != null">
+        third_type = #{thirdType,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLogo != null">
+        company_logo = #{companyLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="positionLablesStr != null">
+        position_lables_str = #{positionLablesStr,jdbcType=VARCHAR},
+      </if>
+      <if test="firstType != null">
+        first_type = #{firstType,jdbcType=VARCHAR},
+      </if>
+      <if test="formatCreateTime != null">
+        format_create_time = #{formatCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null">
+        position_id = #{positionId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="approve != null">
+        approve = #{approve,jdbcType=INTEGER},
+      </if>
+      <if test="industryField != null">
+        industry_field = #{industryField,jdbcType=VARCHAR},
+      </if>
+      <if test="companyLabelListStr != null">
+        company_label_list_str = #{companyLabelListStr,jdbcType=VARCHAR},
+      </if>
+      <if test="resumeProcessRate != null">
+        resume_process_rate = #{resumeProcessRate,jdbcType=INTEGER},
+      </if>
+      <if test="workYear != null">
+        work_year = #{workYear,jdbcType=VARCHAR},
+      </if>
+      <if test="imState != null">
+        im_state = #{imState,jdbcType=VARCHAR},
+      </if>
+      <if test="subwayline != null">
+        subwayline = #{subwayline,jdbcType=VARCHAR},
+      </if>
+      <if test="adWord != null">
+        ad_word = #{adWord,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sdq.bigdata.entity.Position">
+    update position
+    set last_login = #{lastLogin,jdbcType=DATE},
+      education = #{education,jdbcType=VARCHAR},
+      job_nature = #{jobNature,jdbcType=VARCHAR},
+      famous_company = #{famousCompany,jdbcType=TINYINT},
+      company_short_name = #{companyShortName,jdbcType=VARCHAR},
+      salary = #{salary,jdbcType=VARCHAR},
+      second_type = #{secondType,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      app_show = #{appShow,jdbcType=INTEGER},
+      company_full_name = #{companyFullName,jdbcType=VARCHAR},
+      industry_lables_str = #{industryLablesStr,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      business_zones_str = #{businessZonesStr,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      pc_show = #{pcShow,jdbcType=INTEGER},
+      company_size = #{companySize,jdbcType=VARCHAR},
+      stationname = #{stationname,jdbcType=VARCHAR},
+      linestaion = #{linestaion,jdbcType=VARCHAR},
+      match_score = #{matchScore,jdbcType=DOUBLE},
+      company_id = #{companyId,jdbcType=INTEGER},
+      new_score = #{newScore,jdbcType=INTEGER},
+      district = #{district,jdbcType=VARCHAR},
+      finance_stage = #{financeStage,jdbcType=VARCHAR},
+      is_hot_hire = #{isHotHire,jdbcType=INTEGER},
+      city = #{city,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      deliver = #{deliver,jdbcType=INTEGER},
+      skill_lables_str = #{skillLablesStr,jdbcType=VARCHAR},
+      position_advantage = #{positionAdvantage,jdbcType=VARCHAR},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      is_school_job = #{isSchoolJob,jdbcType=INTEGER},
+      aggregate_position_ids_str = #{aggregatePositionIdsStr,jdbcType=VARCHAR},
+      publisher_id = #{publisherId,jdbcType=INTEGER},
+      resume_process_day = #{resumeProcessDay,jdbcType=INTEGER},
+      third_type = #{thirdType,jdbcType=VARCHAR},
+      company_logo = #{companyLogo,jdbcType=VARCHAR},
+      position_lables_str = #{positionLablesStr,jdbcType=VARCHAR},
+      first_type = #{firstType,jdbcType=VARCHAR},
+      format_create_time = #{formatCreateTime,jdbcType=VARCHAR},
+      position_id = #{positionId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DATE},
+      approve = #{approve,jdbcType=INTEGER},
+      industry_field = #{industryField,jdbcType=VARCHAR},
+      company_label_list_str = #{companyLabelListStr,jdbcType=VARCHAR},
+      resume_process_rate = #{resumeProcessRate,jdbcType=INTEGER},
+      work_year = #{workYear,jdbcType=VARCHAR},
+      im_state = #{imState,jdbcType=VARCHAR},
+      subwayline = #{subwayline,jdbcType=VARCHAR},
+      ad_word = #{adWord,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <insert id="insertList" parameterType="com.sdq.bigdata.entity.Position">
+    insert into position (id, last_login, education,
+    job_nature, famous_company, company_short_name,
+    salary, second_type, score,
+    app_show, company_full_name, industry_lables_str,
+    longitude, business_zones_str, count,
+    pc_show, company_size, stationname,
+    linestaion, match_score, company_id,
+    new_score, district, finance_stage,
+    is_hot_hire, city, latitude,
+    deliver, skill_lables_str, position_advantage,
+    position_name, is_school_job, aggregate_position_ids_str,
+    publisher_id, resume_process_day, third_type,
+    company_logo, position_lables_str, first_type,
+    format_create_time, position_id, create_time,
+    approve, industry_field, company_label_list_str,
+    resume_process_rate, work_year, im_state,
+    subwayline, ad_word)
+    values
+    <foreach collection ="list" item="item" index= "index" separator =",">
+      (
+      #{item.id,jdbcType=VARCHAR}, #{item.lastLogin,jdbcType=DATE}, #{item.education,jdbcType=VARCHAR},
+      #{item.jobNature,jdbcType=VARCHAR}, #{item.famousCompany,jdbcType=TINYINT}, #{item.companyShortName,jdbcType=VARCHAR},
+      #{item.salary,jdbcType=VARCHAR}, #{item.secondType,jdbcType=VARCHAR}, #{item.score,jdbcType=INTEGER},
+      #{item.appShow,jdbcType=INTEGER}, #{item.companyFullName,jdbcType=VARCHAR}, #{item.industryLablesStr,jdbcType=VARCHAR},
+      #{item.longitude,jdbcType=VARCHAR}, #{item.businessZonesStr,jdbcType=VARCHAR}, #{item.count,jdbcType=INTEGER},
+      #{item.pcShow,jdbcType=INTEGER}, #{item.companySize,jdbcType=VARCHAR}, #{item.stationname,jdbcType=VARCHAR},
+      #{item.linestaion,jdbcType=VARCHAR}, #{item.matchScore,jdbcType=DOUBLE}, #{item.companyId,jdbcType=INTEGER},
+      #{item.newScore,jdbcType=INTEGER}, #{item.district,jdbcType=VARCHAR}, #{item.financeStage,jdbcType=VARCHAR},
+      #{item.isHotHire,jdbcType=INTEGER}, #{item.city,jdbcType=VARCHAR}, #{item.latitude,jdbcType=VARCHAR},
+      #{item.deliver,jdbcType=INTEGER}, #{item.skillLablesStr,jdbcType=VARCHAR}, #{item.positionAdvantage,jdbcType=VARCHAR},
+      #{item.positionName,jdbcType=VARCHAR}, #{item.isSchoolJob,jdbcType=INTEGER}, #{item.aggregatePositionIdsStr,jdbcType=VARCHAR},
+      #{item.publisherId,jdbcType=INTEGER}, #{item.resumeProcessDay,jdbcType=INTEGER}, #{item.thirdType,jdbcType=VARCHAR},
+      #{item.companyLogo,jdbcType=VARCHAR}, #{item.positionLablesStr,jdbcType=VARCHAR}, #{item.firstType,jdbcType=VARCHAR},
+      #{item.formatCreateTime,jdbcType=VARCHAR}, #{item.positionId,jdbcType=INTEGER}, #{item.createTime,jdbcType=DATE},
+      #{item.approve,jdbcType=INTEGER}, #{item.industryField,jdbcType=VARCHAR}, #{item.companyLabelListStr,jdbcType=VARCHAR},
+      #{item.resumeProcessRate,jdbcType=INTEGER}, #{item.workYear,jdbcType=VARCHAR}, #{item.imState,jdbcType=VARCHAR},
+      #{item.subwayline,jdbcType=VARCHAR}, #{item.adWord,jdbcType=INTEGER}
+      )
+    </foreach>
+  </insert>
+
+
+</mapper>

@@ -5,9 +5,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.sdq.bigdata.entity.Content;
-import com.sdq.bigdata.entity.Datas;
-import com.sdq.bigdata.entity.PositionResult;
+import com.sdq.bigdata.entity.*;
 import com.sdq.bigdata.other.IPBean;
 import com.sdq.bigdata.other.IPList;
 import lombok.extern.slf4j.Slf4j;
@@ -15,123 +13,199 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 /**
  * Author:   chenfeiliang
- * Description:小可爱是大傻瓜
+ * Description:
  */
-
+@Slf4j
 public class Test {
 
-    public  static Map<String,String> cookies = null;
+     public  static  Map<String, String> cookies = null;
+
+     public static List<Result> getDatas(){
+
+         String[] cities = {"深圳", "广州"};//
+         String[] potisions = {"数据分析", "数据运营", "数据挖掘", "算法工程师"}; //
+
+         List<Result> results = Collections.synchronizedList(new ArrayList<>());
+
+         ExecutorService service = Executors.newFixedThreadPool(8);
+         List<Future> futures = new ArrayList<>();
+
+         for (String city : cities) {
+             for (String position : potisions) {
+                 Future future = service.submit(new Runnable() {
+                     @Override
+                     public void run() {
+                         try {
+                             addJob(city, position, results);
+                         } catch (IOException e) {
+                             e.printStackTrace();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                 });
+                 futures.add(future);
+             }
+         }
+         futures.stream().forEach(future -> {
+             try {
+                 future.get();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             } catch (ExecutionException e) {
+                 e.printStackTrace();
+             }
+         });
+
+         System.out.println("总数：" + results.size());
+         return results;
+     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
 
-
-        for (int i=1;i<=30;i++) {
-//            getJob("深圳", "数据分析", i);
-//            Thread.sleep(5000);
-            System.out.println(JSON.toJSONString(getCookie()));
-        }
-
     }
 
-    public static PositionResult getJob(String city, String position, int pageNumber) throws IOException {
-        String url = "https://www.lagou.com/jobs/positionAjax.json?city="+city+"&needAddtionalResult=false";
+    public static void addJob(String city, String position, List<Result> resultAll) throws IOException, InterruptedException {
+        int pageNumber = 1;
+        List<Result> results = new ArrayList<>();
+        //第一页调用返回的结果
+        Content content = getJob(city, position, pageNumber);
+        if (content == null) {
+            return;
+        }
+        if (content.getPositionResult() != null &&
+                content.getPositionResult().getResult() != null &&
+                (!content.getPositionResult().getResult().isEmpty())) {
+            results.addAll(content.getPositionResult().getResult());
+        }
+
+        int pageCount = content.getPositionResult().getTotalCount() / content.getPageSize();
+
+        if (content.getPositionResult().getTotalCount() % content.getPageSize() != 0) {
+            pageCount = pageCount + 1;
+        }
+
+        if (pageCount > 30) {
+            pageCount = 30;
+        }
+
+        System.out.printf("city=%s,position=%s,pageCount=%d", city, position, pageCount);
+
+        while (pageNumber < pageCount) {
+            try {
+                pageNumber++;
+                content = getJob(city, position, pageNumber);
+                if (content!=null&&content.getPositionResult() != null &&
+                        content.getPositionResult().getResult() != null &&
+                        (!content.getPositionResult().getResult().isEmpty())) {
+                    results.addAll(content.getPositionResult().getResult());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+//        System.out.println(city + position + "***************" + results.size());
+        resultAll.addAll(results);
+    }
+
+    public static Content getJob(String city, String position, int pageNumber) throws IOException, InterruptedException {
+        String url = "https://www.lagou.com/jobs/positionAjax.json?city=" + city + "&needAddtionalResult=false";
 
         Document doc = null;
 
-        if(Objects.isNull(cookies)){
+        if (Objects.isNull(cookies)) {
             cookies = getCookie();
         }
 
         Connection connection = Jsoup.connect(String.valueOf(url))
-                .data("first","true")
-                .data("kd",String.valueOf(position))
-                .data("pn",String.valueOf(pageNumber))
-                .header("Accept","application/json, text/javascript, */*; q=0.01")//去掉中文乱码
-                .header("Accept-Encoding","gzip, deflate, br")
-                .header("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
-                .header("Connection","keep-alive")
+                .data("first", "true")
+                .data("kd", String.valueOf(position))
+                .data("pn", String.valueOf(pageNumber))
+                .header("Accept", "application/json, text/javascript, */*; q=0.01")//去掉中文乱码
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Accept-Language", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
+                .header("Connection", "keep-alive")
                 .cookies(cookies)
-                .header("Host","www.lagou.com")
-                .header("Referer","https://www.lagou.com/jobs/list_")//去掉发生403错误HTTP error fetching URL
-                .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
+                .header("Host", "www.lagou.com")
+                .header("Referer", "https://www.lagou.com/jobs/list_")//去掉发生403错误HTTP error fetching URL
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
                 .timeout(5000).ignoreContentType(true)
-                .ignoreHttpErrors(true)  ;
+                .ignoreHttpErrors(true);
 
         doc = connection.get();
         String stringData = doc.text().toString();
         System.out.println(stringData);
         Datas datas = JSON.parseObject(stringData, Datas.class);
-        if(datas.isSuccess()){
+        if (datas.isSuccess()) {
             Content content = datas.getContent();
-            PositionResult positionResult = content.getPositionResult();
-            return positionResult;
-        }else {
-            cookies = null;
-            return getJobAgain(city,position,pageNumber);
+            return content;
+        } else {
+            cookies = getCookie();
+//            Thread.sleep(1000);
+            return getJobAgain(city, position, pageNumber);
         }
     }
 
-    public static PositionResult getJobAgain(String city, String position, int pageNumber) throws IOException{
-        String url = "https://www.lagou.com/jobs/positionAjax.json?city="+city+"&needAddtionalResult=false";
+    public static Content getJobAgain(String city, String position, int pageNumber) throws IOException {
+        String url = "https://www.lagou.com/jobs/positionAjax.json?city=" + city + "&needAddtionalResult=false";
 
         Document doc = null;
-
-        if(Objects.isNull(cookies)){
-            cookies = getCookie();
+        synchronized (Test.class) {
+            if (Objects.isNull(cookies)) {
+                cookies = getCookie();
+            }
         }
 
         Connection connection = Jsoup.connect(String.valueOf(url))
-                .data("first","true")
-                .data("kd",String.valueOf(position))
-                .data("pn",String.valueOf(pageNumber))
-                .header("Accept","application/json, text/javascript, */*; q=0.01")//去掉中文乱码
-                .header("Accept-Encoding","gzip, deflate, br")
-                .header("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
-                .header("Connection","keep-alive")
-                .header("Cookie", ""+
-                        "user_trace_token=20200414230729-d4be2376-99c8-47b7-bc48-0c6a6f8a0f82;" +
-                        //20200412184515-3fa6e72d-5f00-4d0e-a669-5c5b248afb02
-                        "X_HTTP_TOKEN=42daf4b72327b2819486786851bf5e71415983ed09;" )
-                //77a12b351ef581248665786851fc8c2688b48ea3c2
-                .header("Host","www.lagou.com")
-                .header("Referer","https://www.lagou.com/jobs/list_")//去掉发生403错误HTTP error fetching URL
-                .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
+                .data("first", "true")
+                .data("kd", String.valueOf(position))
+                .data("pn", String.valueOf(pageNumber))
+                .header("Accept", "application/json, text/javascript, */*; q=0.01")//去掉中文乱码
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Accept-Language", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2")
+                .header("Connection", "keep-alive")
+                .cookies(cookies)
+                .header("Host", "www.lagou.com")
+                .header("Referer", "https://www.lagou.com/jobs/list_")//去掉发生403错误HTTP error fetching URL
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
                 .timeout(5000).ignoreContentType(true)
-                .ignoreHttpErrors(true)  ;
+                .ignoreHttpErrors(true);
 
         doc = connection.get();
         String stringData = doc.text().toString();
         System.out.println(stringData);
         Datas datas = JSON.parseObject(stringData, Datas.class);
-        if(datas.isSuccess()){
+        if (datas.isSuccess()) {
             Content content = datas.getContent();
-            PositionResult positionResult = content.getPositionResult();
-            return positionResult;
+            return content;
         }
         return null;
     }
 
-    public static Map<String,String> getCookie() throws IOException {
+    public static Map<String, String> getCookie() throws IOException {
         String url1 = "https://a.lagou.com/collect";
 
         Connection connection1 = Jsoup.connect(url1)
-                .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101 Firefox/60.0")
                 .timeout(10000).ignoreContentType(true)
-                .ignoreHttpErrors(true)  ;
+                .ignoreHttpErrors(true);
         Connection.Response rs1 = connection1.execute();
-        System.out.println(rs1.body());
-        System.out.println(rs1.cookies());
 
         String url2 = "https://www.lagou.com/utrack/track.js?version=1.0.1.0";
 
@@ -140,10 +214,9 @@ public class Test {
                 .timeout(20000).ignoreContentType(true)
                 .ignoreHttpErrors(true);
         Connection.Response rs2 = connection2.execute();
-        System.out.println(rs2.body());
-        System.out.println(rs2.cookies());
 
-        Map<String, String> cookies = rs2.cookies();
+        Map<String, String> cookies = new HashMap<>();
+        cookies.put("user_trace_token", rs1.cookie("user_trace_token"));
 
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
         //启动cookie
@@ -166,10 +239,37 @@ public class Test {
                 webClient.getCookieManager().getCookies();
         //观察一下cookie
         cookiesTemmp.stream().forEach(item -> {
-            System.out.println(item.getName() + " ---------- " + item.getValue());
-            cookies.put(item.getName(),item.getValue());
+            if (item.getName().equals("X_HTTP_TOKEN")) {
+                cookies.put(item.getName(), item.getValue());
+            }
         });
+
+        System.out.println("all cookies: " + cookies);
         return cookies;
+    }
+
+    //将爬虫的数据存到文件中
+    public static void save() {
+        try {
+
+            File f1 = new File("E:/file/LOL/666.txt");
+            if (f1.exists() == false) {
+                f1.getParentFile().mkdirs();
+            }
+            // 准备长度是2的字节数组，用88,89初始化，其对应的字符分别是X,Y
+            byte data[] = {88, 89};
+            // 创建基于文件的输出流
+            FileOutputStream fos = new FileOutputStream(f1);
+            // 把数据写入到输出流
+            fos.write(data);
+            // 关闭输出流
+            fos.close();
+            System.out.println("输入完成");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

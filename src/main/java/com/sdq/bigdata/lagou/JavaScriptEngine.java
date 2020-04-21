@@ -7,7 +7,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -65,9 +65,9 @@ public class JavaScriptEngine {
      * @throws ScriptException
      */
     public String decodeData(String word) throws NoSuchMethodException, ScriptException {
-        if (StringUtils.isBlank(word)) {
-            throw new RuntimeException();
-        }
+//        if (StringUtils.isBlank(word)) {
+//            throw new RuntimeException();
+//        }
         Invocable invocable = (Invocable) engine;
         //Decrypt是js函数名, word, DECODE_KEY是参数
         return (String) invocable.invokeFunction("Decrypt", word, DECODE_KEY);
