@@ -5,6 +5,9 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.google.common.collect.Lists;
+import com.sdq.bigdata.constant.CityEnum;
+import com.sdq.bigdata.constant.PositionEnum;
 import com.sdq.bigdata.entity.*;
 import com.sdq.bigdata.other.IPBean;
 import com.sdq.bigdata.other.IPList;
@@ -36,21 +39,21 @@ public class Test {
 
      public static List<Result> getDatas(){
 
-         String[] cities = {"深圳", "广州"};//
-         String[] potisions = {"数据分析", "数据运营", "数据挖掘", "算法工程师"}; //
+//         String[] cities = {"深圳", "广州"};//
+//         String[] potisions = {"数据分析", "数据运营", "数据挖掘", "算法工程师"}; //
 
          List<Result> results = Collections.synchronizedList(new ArrayList<>());
 
          ExecutorService service = Executors.newFixedThreadPool(8);
          List<Future> futures = new ArrayList<>();
 
-         for (String city : cities) {
-             for (String position : potisions) {
+         for (CityEnum city : CityEnum.values()) {
+             for (PositionEnum position : PositionEnum.values()) {
                  Future future = service.submit(new Runnable() {
                      @Override
                      public void run() {
                          try {
-                             addJob(city, position, results);
+                             addJob(city.getName(), position.getName(), results);
                          } catch (IOException e) {
                              e.printStackTrace();
                          } catch (InterruptedException e) {
@@ -119,6 +122,9 @@ public class Test {
                 e.printStackTrace();
             }
         }
+        results.forEach(result -> {
+            result.setAggregatePositionIds(Lists.newArrayList(position));
+        });
 
 //        System.out.println(city + position + "***************" + results.size());
         resultAll.addAll(results);

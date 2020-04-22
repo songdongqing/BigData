@@ -1,4 +1,4 @@
-package com.sdq.bigdata.kafka;
+package com.sdq.bigdata.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.sdq.bigdata.entity.Job;

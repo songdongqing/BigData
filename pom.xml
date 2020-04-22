@@ -90,16 +90,16 @@
             <!--<version>2.5.0.RELEASE</version>-->
         <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>org.apache.hbase</groupId>-->
-            <!--<artifactId>hbase-client</artifactId>-->
-            <!--<version>1.1.2</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.hbase</groupId>-->
-            <!--<artifactId>hbase-server</artifactId>-->
-            <!--<version>1.3.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>1.3.1</version>
+        </dependency>
 
         <!--<dependency>-->
             <!--<groupId>org.springframework.data</groupId>-->
@@ -111,17 +111,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.mybatis.spring.boot</groupId>-->
-			<!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
-			<!--<version>2.1.2</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>mysql</groupId>-->
-			<!--<artifactId>mysql-connector-java</artifactId>-->
-			<!--<scope>runtime</scope>-->
-		<!--</dependency>-->
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -148,22 +137,22 @@
             </exclusions>
         </dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>org.apache.hadoop</groupId>-->
-			<!--<artifactId>hadoop-client</artifactId>-->
-			<!--<version>2.7.2</version>-->
-		<!--</dependency>-->
-		<!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common &ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.hadoop</groupId>-->
-			<!--<artifactId>hadoop-common</artifactId>-->
-			<!--<version>2.7.2</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.apache.hadoop</groupId>-->
-			<!--<artifactId>hadoop-mapreduce-client-common</artifactId>-->
-			<!--<version>2.7.2</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-mapreduce-client-common</artifactId>
+			<version>2.7.2</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sourceforge.htmlunit/webdriver -->
 		<!--<dependency>-->
