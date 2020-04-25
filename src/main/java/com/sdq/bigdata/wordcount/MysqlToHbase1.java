@@ -64,7 +64,7 @@ public class MysqlToHbase1 {
 
         // 数据库操作必定要使用驱动,把jar上传到hdfs做成缓存文件,供每台机器使用
         // 否则就要上传jar到每一台机器
-        job.addFileToClassPath(new Path("hdfs://192.168.19.11:9000/mysql-connector-java-5.1.38.jar"));
+        //job.addFileToClassPath(new Path("hdfs://192.168.19.11:9000/mysql-connector-java-5.1.38.jar"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
 
     }

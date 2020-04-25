@@ -4,6 +4,7 @@ import com.sdq.bigdata.constant.PositionEnum;
 import com.sdq.bigdata.entity.Position;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -18,9 +19,8 @@ public class JDBCMapper extends Mapper<LongWritable, Position, Text, IntWritable
     Text k = new Text();
     IntWritable v = new IntWritable(1);
 
-
     @Override
-    protected void map(LongWritable key, Position value, Context context) throws IOException, InterruptedException {
+    protected void map(LongWritable key, Position value, Mapper<LongWritable, Position, Text, IntWritable>.Context context) throws IOException, InterruptedException {
 
         //这里传入的key是0，1...n
         // value是Position(id=fead07aba8504bf6826b08e7eb5e4492, lastLogin=null, education=null...),
@@ -58,6 +58,6 @@ public class JDBCMapper extends Mapper<LongWritable, Position, Text, IntWritable
 //            context.write(new Text(s),new IntWritable(1));
 //        }
         k.set(str);
-        context.write(k,v);
+        context.write(k,v); //text(string)  int
     }
 }

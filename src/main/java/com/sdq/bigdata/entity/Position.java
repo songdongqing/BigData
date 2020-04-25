@@ -148,6 +148,12 @@ public class Position implements DBWritable, Writable {
         positionName = rs.getString("position_name");
         city = rs.getString("city");
         aggregatePositionIdsStr = rs.getString("aggregate_position_ids_str");
+        financeStage = rs.getString("finance_stage");
+        salary = rs.getString("salary");
+        companySize = rs.getString("company_size");
+        workYear = rs.getString("work_year");
+        skillLablesStr = rs.getString("skill_lables_str");
+        industryField = rs.getString("industry_field");
 
 //        name = rs.getString(2);
 //        txt = rs.getString(3);
