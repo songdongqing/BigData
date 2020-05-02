@@ -15,7 +15,7 @@ import java.io.IOException;
  * Author:   chenfeiliang
  * Description:
  */
-public class WcJob {
+public class PositionJob {
 
     public static void main(String[] args) throws IOException {
 
@@ -26,14 +26,15 @@ public class WcJob {
 //        conf.set("yarn.resourcemanager.hostname", "node02:8088");
         //zookeeper集群，连接到HMaster
 //        conf.set("hbase.zookeeper.quorum", "node01,node02,node03");
-        conf.set("hbase.zookeeper.quorum", "192.168.19.11");
+//        conf.set("hbase.zookeeper.quorum", "192.168.19.11");
+        conf.set("hbase.zookeeper.quorum", "hadoop");
         conf.set("hbase.zookeeper.property.clientPort", "2181");
 
         Job job = Job.getInstance(conf);
-        job.setJarByClass(WcJob.class);
-        job.setJobName("mapReduceToHBase");
+        job.setJarByClass(PositionJob.class);
+        job.setJobName("PositionJob");
 
-        job.setMapperClass(JDBCMapper.class);
+        job.setMapperClass(PositionMapper.class);
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(IntWritable.class);
 //        //hdfs文件存储路径
@@ -55,7 +56,7 @@ public class WcJob {
                 "select count(*) from position");
 
         //实现reduce结果输出到 HBase的哪个表
-        TableMapReduceUtil.initTableReducerJob("position", JDBCReducer.class, job);
+        TableMapReduceUtil.initTableReducerJob("position", PositionReducer.class, job);
 
         try {
             System.out.println(job.waitForCompletion(true));

@@ -25,7 +25,7 @@ public class SkillReducer extends TableReducer<Text, IntWritable, ImmutableBytes
         String skillLables = split[0];
         String city = split[1];
         String position = split[2];
-        String key1 = city+"_"+position;
+        String rowkey = city+"_"+position;
 
         int sum = 0;
         for (IntWritable i : values) {
@@ -33,9 +33,9 @@ public class SkillReducer extends TableReducer<Text, IntWritable, ImmutableBytes
         }
         //设置word为Row Key 构建 Put对象
         //RowKey
-        Put put = new Put(skillLables.getBytes());
+        Put put = new Put(rowkey.getBytes());
         //指定插入到哪个列族，插入的列名和值
-        put.add("info".getBytes(), key1.getBytes(), (sum+"").getBytes());
+        put.add("info".getBytes(), skillLables.getBytes(), (sum+"").getBytes());
 
         context.write(null, put);
     }

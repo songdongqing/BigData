@@ -3,9 +3,11 @@ package com.sdq.bigdata.hbase;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,19 @@ public class HbaseClient {
     static {
         //使用HBaseConfiguration的单例方法实例化
         conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "192.168.19.11");
+        conf.set("hbase.zookeeper.quorum", "hadoop");
+//        conf.set("hbase.zookeeper.quorum", "192.168.19.11");
         conf.set("hbase.zookeeper.property.clientPort", "2181");
+
+
+//        try {
+//            Connection conn = ConnectionFactory.createConnection(conf);
+//            System.out.println("获取连接conn:"+conn);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public HbaseClient() throws IOException {
@@ -63,16 +76,9 @@ public class HbaseClient {
         ResultScanner resultScanner = hTable.getScanner(scan);
         for (Result result : resultScanner) {
             Cell[] cells = result.rawCells();
-            String family = "";
+
             for (Cell cell : cells) {
 
-//                String key = Bytes.toString(CellUtil.cloneRow(cell))+"_"+Bytes.toString(CellUtil.cloneFamily(cell));
-//                if(map.containsKey(key))
-//                {
-//
-//                }else {
-//
-//                }
                 System.out.print("列族：" + Bytes.toString(CellUtil.cloneFamily(cell)) + " ");
                 System.out.print("行键：" + Bytes.toString(CellUtil.cloneRow(cell)) + " ");
                 System.out.print("列:" + Bytes.toString(CellUtil.cloneQualifier(cell)) + " ");
@@ -82,6 +88,72 @@ public class HbaseClient {
 
         }
     }
+
+    //通过表名和行键来获取总数据
+    public static int getRow(String tableName, String rowKey) throws IOException {
+
+        int num = 0;
+        HTable table = new HTable(conf, tableName);
+        Get get = new Get(Bytes.toBytes(rowKey));
+        Result result = table.get(get);
+        for (Cell cell : result.rawCells()) {
+            num = num + Integer.parseInt(Bytes.toString(CellUtil.cloneValue(cell)));
+
+        }
+        System.out.println(rowKey + "总数为:" + num);
+        return num;
+    }
+
+    public static Map<String,Integer> getRowLike(String tableName,String likeRow) throws IOException {
+        Map<String,Integer> skillMap = new HashMap<>();
+        List<Result> results = new ArrayList<>();
+        HTable table = new HTable(conf, tableName);
+        Scan scan = new Scan();
+        Filter filter3 = new RowFilter(CompareFilter.CompareOp.EQUAL,
+                new SubstringComparator(likeRow));
+        scan.setFilter(filter3);
+        ResultScanner scanner3 = table.getScanner(scan);
+        for (Result res : scanner3) {
+            results.add(res);
+        }
+        scanner3.close();
+
+        for (Result result : results) {
+            Cell[] cells = result.rawCells();
+            for (Cell cell : cells) {
+                String skill = Bytes.toString(CellUtil.cloneQualifier(cell));
+                String numStr = Bytes.toString(CellUtil.cloneValue(cell));
+                if(skillMap.containsKey(skill)){
+                    int num = skillMap.get(skill)+Integer.parseInt(numStr);
+                    skillMap.put(skill,num);
+                }else {
+                    skillMap.put(skill,Integer.parseInt(numStr));
+                }
+            }
+
+        }
+        return skillMap;
+    }
+
+    //获取某一行指定“列族:列”的数据
+    public static int getRowQualifier(String tableName, String rowKey, String family, String
+            qualifier) throws IOException {
+        int num = 0;
+        HTable table = new HTable(conf, tableName);
+        Get get = new Get(Bytes.toBytes(rowKey));
+        get.addColumn(Bytes.toBytes(family), Bytes.toBytes(qualifier));
+        Result result = table.get(get);
+        for (Cell cell : result.rawCells()) {
+            System.out.println("行键:" + Bytes.toString(result.getRow()));
+            System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
+            System.out.println("列:" + Bytes.toString(CellUtil.cloneQualifier(cell)));
+            System.out.println("值:" + Bytes.toString(CellUtil.cloneValue(cell)));
+            num =  Integer.parseInt(Bytes.toString(CellUtil.cloneValue(cell)));
+        }
+        return num;
+    }
+
+
 
     //创建表
     public static void createTable(String tableName, String... columnFamily) throws
@@ -121,33 +193,34 @@ public class HbaseClient {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("***************** 样本情况 ******************************");
-        getAllRows("position");
-        System.out.println();
 
-        System.out.println("***************** 工资情况 ******************************");
-        getAllRows("salary");
-        System.out.println();
+//        System.out.println("***************** 样本情况 ******************************");
+//        getAllRows("position");
+//        System.out.println();
 
-        System.out.println("*************** 公司规模分布 ********************************");
-        getAllRows("companySize");
-        System.out.println();
+//        System.out.println("***************** 工资情况 ******************************");
+//        getAllRows("salary");
+//        System.out.println();
 
-        System.out.println("*************** 工作年限要求 ********************************");
-        getAllRows("workYear");
-        System.out.println();
+//
+//        System.out.println("*************** 公司规模分布 ********************************");
+//        getAllRows("companySize");
+//        System.out.println();
 
-        System.out.println("*************** 公司融资情况 ********************************");
-        getAllRows("companySalary");
-        System.out.println();
-
-        System.out.println("*************** 行业分布 ********************************");
-        getAllRows("industryField");
-        System.out.println();
-
+//        System.out.println("*************** 工作年限要求 ********************************");
+//        getAllRows("workYear");
+//        System.out.println();
+//
+//        System.out.println("*************** 公司融资情况 ********************************");
+//        getAllRows("companySalary");
+//        System.out.println();
+//
+//        System.out.println("*************** 行业分布 ********************************");
+//        getAllRows("industryField");
+//        System.out.println();
+//
         System.out.println("*************** 职位要求 ********************************");
         getAllRows("skill");
-
 
 
     }

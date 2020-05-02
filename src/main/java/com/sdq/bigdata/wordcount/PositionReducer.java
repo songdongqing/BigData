@@ -17,7 +17,7 @@ import java.io.IOException;
  * Author:   chenfeiliang
  * Description:
  */
-public class JDBCReducer extends  TableReducer<Text, IntWritable, ImmutableBytesWritable> {
+public class PositionReducer extends  TableReducer<Text, IntWritable, ImmutableBytesWritable> {
 
     @Override
     protected void reduce(Text key, Iterable<IntWritable> values,

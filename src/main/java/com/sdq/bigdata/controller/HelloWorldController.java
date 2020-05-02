@@ -23,7 +23,7 @@ import java.util.List;
  * Description:
  */
 @Controller
-public class HelloWorld {
+public class HelloWorldController {
 
 //    @Autowired
 //    private KafkaTemplate kafkaTemplate;
@@ -66,6 +66,13 @@ public class HelloWorld {
 //        }
 //        System.out.println("发送数据");
         return "success";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/hello")
+    public String hello(){
+        return "hello,47..";
     }
 
 }

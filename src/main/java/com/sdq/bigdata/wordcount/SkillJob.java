@@ -19,7 +19,7 @@ public class SkillJob {
     public static void main(String[] args) throws IOException {
 
         Configuration conf = new Configuration();
-        conf.set("hbase.zookeeper.quorum", "192.168.19.11");
+        conf.set("hbase.zookeeper.quorum", "hadoop");
         conf.set("hbase.zookeeper.property.clientPort", "2181");
 
         Job job = Job.getInstance(conf);

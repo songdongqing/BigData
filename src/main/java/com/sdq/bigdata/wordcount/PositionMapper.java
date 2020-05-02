@@ -14,7 +14,7 @@ import java.io.IOException;
  * Author:   chenfeiliang
  * Description:
  */
-public class JDBCMapper extends Mapper<LongWritable, Position, Text, IntWritable> {
+public class PositionMapper extends Mapper<LongWritable, Position, Text, IntWritable> {
 
     Text k = new Text();
     IntWritable v = new IntWritable(1);
