@@ -8,10 +8,13 @@ import com.sdq.bigdata.mapper.PositionMapper;
 import com.sdq.bigdata.test.Test;
 import com.sdq.bigdata.util.CommUtil;
 import com.sdq.bigdata.util.UuidUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,6 +26,7 @@ import java.util.List;
  * Description:
  */
 @Controller
+@Api(value = "test",description = "测试相关接口")
 public class HelloWorldController {
 
 //    @Autowired
@@ -37,7 +41,7 @@ public class HelloWorldController {
     PositionMapper positionMapper;
 
     @ResponseBody
-    @RequestMapping("/hello2")
+    @GetMapping("/hello2")
     public String sendMsg(){
         List<Result> results  = Test.getDatas();
         List<Position> positions = new ArrayList<>();
@@ -70,7 +74,7 @@ public class HelloWorldController {
 
 
     @ResponseBody
-    @RequestMapping("/hello")
+    @GetMapping("/hello")
     public String hello(){
         return "hello,47..";
     }

@@ -6,14 +6,13 @@ import com.sdq.bigdata.entity.ResResult;
 import com.sdq.bigdata.entity.Sample;
 import com.sdq.bigdata.service.SampleService;
 import com.sdq.bigdata.vo.GetSampleVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.Objects;
  * Author:   chenfeiliang
  * Description: 样本情况分析
  */
+@Api(value = "样本情况分析相关接口",description = "样本情况分析相关接口")
 @Controller
 @RequestMapping("/sample")
 @Slf4j
@@ -32,9 +32,10 @@ public class SampleController {
     @Autowired
     SampleService sampleService;
 
-    @RequestMapping("/sum")
+    @PostMapping("/sum")
     @ResponseBody
     @CrossOrigin
+    @ApiOperation("获取样本情况数据")
     public ResResult getSample(@RequestBody GetSampleVo getSampleVo ) throws IOException {
         try {
             List<Object> list = new ArrayList<>();

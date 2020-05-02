@@ -23,7 +23,7 @@ public class SwaggerApp {
                 .apiInfo(apiInfo())
                 .select()
                 //为当前包路径
-                .apis(RequestHandlerSelectors.basePackage("com.sdq.hellodemo.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sdq.bigdata.controller"))
                 .paths(PathSelectors.any())
                 .build();
 //        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).build();
@@ -32,9 +32,9 @@ public class SwaggerApp {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("Spring Boot 使用 Swagger2 构建RESTful API")
+                .title("拉勾网数据分析项目")
                 //创建人
-                .contact(new Contact("Bryan", "http://blog.bianxh.top/", ""))
+                .contact(new Contact("宋东情", "", ""))
                 //版本号
                 .version("1.0")
                 //描述

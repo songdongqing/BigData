@@ -8,6 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @SpringBootApplication
+@MapperScan("com.sdq.*")
 public class BigdataApplication {
 
 	public static void main(String[] args) {
