@@ -1,36 +1,36 @@
 package com.sdq.bigdata.test;
 
 import com.sdq.bigdata.util.CommUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class MyTest {
 
 
     public static void main(String[] args) {
-        //实体类所在的package在磁盘上的绝对路径 E:\git\Repository\BigData2\BigData\src\main\java\com\sdq\bigdata\entity
-        String packageName = "E:\\git\\Repository\\BigData2\\BigData\\src\\main\\java\\com\\sdq\\bigdata\\entity";
-        //生成sql的文件夹
-        String filePath = "E:\\create\\";
-        //项目中实体类的路径
-        String prefix = "com.sdq.bigdata.entity.";
-        String className = "";
-
-        StringBuffer sqls = new StringBuffer();
-        //获取包下的所有类名称
-        List<String> list = getAllClasses(packageName);
-        for (String str : list) {
-            className = prefix + str.substring(0, str.lastIndexOf("."));
-            String sql = generateSql(className, filePath);
-            sqls.append(sql);
-        }
-        System.out.println(sqls.toString());
-        StringToSql(sqls.toString(), filePath + "report.sql");
-
+//        //实体类所在的package在磁盘上的绝对路径 E:\git\Repository\BigData2\BigData\src\main\java\com\sdq\bigdata\entity
+//        String packageName = "E:\\git\\Repository\\BigData2\\BigData\\src\\main\\java\\com\\sdq\\bigdata\\entity";
+//        //生成sql的文件夹
+//        String filePath = "E:\\create\\";
+//        //项目中实体类的路径
+//        String prefix = "com.sdq.bigdata.entity.";
+//        String className = "";
+//
+//        StringBuffer sqls = new StringBuffer();
+//        //获取包下的所有类名称
+//        List<String> list = getAllClasses(packageName);
+//        for (String str : list) {
+//            className = prefix + str.substring(0, str.lastIndexOf("."));
+//            String sql = generateSql(className, filePath);
+//            sqls.append(sql);
+//        }
+//        System.out.println(sqls.toString());
+//        StringToSql(sqls.toString(), filePath + "report.sql");
     }
     /**
      * 根据实体类生成建表语句

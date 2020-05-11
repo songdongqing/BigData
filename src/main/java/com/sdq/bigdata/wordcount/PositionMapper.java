@@ -34,29 +34,9 @@ public class PositionMapper extends Mapper<LongWritable, Position, Text, IntWrit
             }
         }
 
-//        if(positionName.contains("数据分析")){
-//            positionName = "数据分析";
-//        }else if(positionName.contains("数据运营")){
-//            positionName = "数据运营";
-//        }else if(positionName.contains("数据挖掘")){
-//            positionName = "数据挖掘";
-//        }else{
-//            positionName = "算法工程师";
-//        }
         String city = value.getCity();
         str = positionName+"_"+city;
-        System.out.println(str);
 
-
-        //拿到一行文本内容，记得要是String类型
-//        String line = value.getPositionName();
-//        System.out.println(value.getId() + "-->" + value.getPositionName());
-        //将这行文本切分成单词，以空格切分
-//        String[] arr = line.split(" ");
-//        for(String s : arr){
-//            //<单词，1>
-//            context.write(new Text(s),new IntWritable(1));
-//        }
         k.set(str);
         context.write(k,v); //text(string)  int
     }

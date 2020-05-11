@@ -31,7 +31,6 @@ public class SalaryMapper extends Mapper<LongWritable, Position, Text, IntWritab
 
         salary = salary.toLowerCase();
         salary = salary.replaceAll("k","");
-//        System.out.println(salary);
 
 //        //对工资情况进行划分
         if(!StringUtils.isBlank(salary)&&salary.contains("-")){
@@ -53,7 +52,6 @@ public class SalaryMapper extends Mapper<LongWritable, Position, Text, IntWritab
         String key1 = salary+"_"+city+"_"+position;
         k.set(key1);
 
-        System.out.println("Mapper-key:"+key1);
         context.write(k,v); //text(string)  int
     }
 

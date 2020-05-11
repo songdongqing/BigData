@@ -1,4 +1,4 @@
-package com.sdq.bigdata.test;
+package com.sdq.bigdata.strategy;
 
 import com.alibaba.fastjson.JSON;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -8,39 +8,32 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.google.common.collect.Lists;
 import com.sdq.bigdata.constant.CityEnum;
 import com.sdq.bigdata.constant.PositionEnum;
-import com.sdq.bigdata.entity.*;
-import com.sdq.bigdata.other.IPBean;
-import com.sdq.bigdata.other.IPList;
+import com.sdq.bigdata.dto.JobResult;
+import com.sdq.bigdata.entity.Content;
+import com.sdq.bigdata.entity.Datas;
+import com.sdq.bigdata.entity.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 /**
  * Author:   chenfeiliang
  * Description:
  */
 @Slf4j
-public class Test {
+public class LaGouStrategy implements IJobStrategy{
 
-     public  static  Map<String, String> cookies = null;
+     public  Map<String, String> cookies = null;
 
-     public static List<Result> getDatas(){
-
-//         String[] cities = {"深圳", "广州"};//
-//         String[] potisions = {"数据分析", "数据运营", "数据挖掘", "算法工程师"}; //
+     public JobResult<List<Result>> getDatas(int pages){
 
          List<Result> results = Collections.synchronizedList(new ArrayList<>());
 
@@ -53,7 +46,7 @@ public class Test {
                      @Override
                      public void run() {
                          try {
-                             addJob(city.getName(), position.getName(), results);
+                             addJob(city.getName(), position.getName(), results, pages);
                          } catch (IOException e) {
                              e.printStackTrace();
                          } catch (InterruptedException e) {
@@ -75,15 +68,13 @@ public class Test {
          });
 
          System.out.println("总数：" + results.size());
-         return results;
+
+         JobResult jobResult = new JobResult();
+         jobResult.setJobs(results);
+         return jobResult;
      }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-
-
-    }
-
-    public static void addJob(String city, String position, List<Result> resultAll) throws IOException, InterruptedException {
+    public  void addJob(String city, String position, List<Result> resultAll,int pages) throws IOException, InterruptedException {
         int pageNumber = 1;
         List<Result> results = new ArrayList<>();
         //第一页调用返回的结果
@@ -107,6 +98,12 @@ public class Test {
             pageCount = 30;
         }
 
+        //如果pages是-1查全部,不是，则查pages页
+        if(pages!= -1){
+            pageCount = pages;
+        }
+
+
         System.out.printf("city=%s,position=%s,pageCount=%d", city, position, pageCount);
 
         while (pageNumber < pageCount) {
@@ -126,11 +123,10 @@ public class Test {
             result.setAggregatePositionIds(Lists.newArrayList(position));
         });
 
-//        System.out.println(city + position + "***************" + results.size());
         resultAll.addAll(results);
     }
 
-    public static Content getJob(String city, String position, int pageNumber) throws IOException, InterruptedException {
+    public  Content getJob(String city, String position, int pageNumber) throws IOException, InterruptedException {
         String url = "https://www.lagou.com/jobs/positionAjax.json?city=" + city + "&needAddtionalResult=false";
 
         Document doc = null;
@@ -163,16 +159,15 @@ public class Test {
             return content;
         } else {
             cookies = getCookie();
-//            Thread.sleep(1000);
             return getJobAgain(city, position, pageNumber);
         }
     }
 
-    public static Content getJobAgain(String city, String position, int pageNumber) throws IOException {
+    public  Content getJobAgain(String city, String position, int pageNumber) throws IOException {
         String url = "https://www.lagou.com/jobs/positionAjax.json?city=" + city + "&needAddtionalResult=false";
 
         Document doc = null;
-        synchronized (Test.class) {
+        synchronized (LaGouStrategy.class) {
             if (Objects.isNull(cookies)) {
                 cookies = getCookie();
             }
@@ -241,7 +236,7 @@ public class Test {
         page.executeJavaScript("document.cookie=''");
         page.executeJavaScript(rs2.body());
 
-        java.util.Set<com.gargoylesoftware.htmlunit.util.Cookie> cookiesTemmp =
+        Set<com.gargoylesoftware.htmlunit.util.Cookie> cookiesTemmp =
                 webClient.getCookieManager().getCookies();
         //观察一下cookie
         cookiesTemmp.stream().forEach(item -> {
@@ -252,30 +247,6 @@ public class Test {
 
         System.out.println("all cookies: " + cookies);
         return cookies;
-    }
-
-    //将爬虫的数据存到文件中
-    public static void save() {
-        try {
-
-            File f1 = new File("E:/file/LOL/666.txt");
-            if (f1.exists() == false) {
-                f1.getParentFile().mkdirs();
-            }
-            // 准备长度是2的字节数组，用88,89初始化，其对应的字符分别是X,Y
-            byte data[] = {88, 89};
-            // 创建基于文件的输出流
-            FileOutputStream fos = new FileOutputStream(f1);
-            // 把数据写入到输出流
-            fos.write(data);
-            // 关闭输出流
-            fos.close();
-            System.out.println("输入完成");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
 }

@@ -33,7 +33,7 @@ public class CompanySalaryMapper extends Mapper <LongWritable, Position, Text, I
         String key1 = financeStage+"_"+city;
         k.set(key1);
 
-        System.out.println("Mapper-key:"+key1);
+//        System.out.println("Mapper-key:"+key1);
         context.write(k,v); //text(string)  int
     }
 

@@ -190,9 +190,38 @@ public class HbaseClient {
 
     }
 
+    //根据表名清空表数据
+    public static void truncateTable(String tableNameString) {
+
+
+        try {
+            HBaseAdmin admin = new HBaseAdmin(conf);
+            System.out.println("开始清空数据");
+
+            //取得目标数据表的表明对象
+            TableName tableName = TableName.valueOf(tableNameString);
+            //设置表状态为无效
+            admin.disableTable(tableName);
+            //清空指定表的数据
+            admin.truncateTable(tableName, true);
+            System.out.println("结束");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
 
     public static void main(String[] args) throws IOException {
 
+        addRowData("student","2019","info","age","23");
+
+//        getAllRows("student");
+//        truncateTable("student");
+        getAllRows("student");
 
 //        System.out.println("***************** 样本情况 ******************************");
 //        getAllRows("position");
@@ -219,8 +248,8 @@ public class HbaseClient {
 //        getAllRows("industryField");
 //        System.out.println();
 //
-        System.out.println("*************** 职位要求 ********************************");
-        getAllRows("skill");
+//        System.out.println("*************** 职位要求 ********************************");
+//        getAllRows("skill");
 
 
     }

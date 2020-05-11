@@ -39,13 +39,12 @@ public class SkillMapper extends Mapper<LongWritable, Position, Text, IntWritabl
             for (String s : split){
                 String key1 = s+"_"+city+"_"+position;
                 k.set(key1);
-                System.out.println("Mapper:"+key1);
                 context.write(k,v);
             }
         }else {
             String key1 = skillLables+"_"+city+"_"+position;
             k.set(key1);
-            System.out.println("Mapper:"+key1);
+
             context.write(k,v);
         }
 

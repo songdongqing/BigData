@@ -28,7 +28,6 @@ public class WorkYearMapper extends Mapper<LongWritable, Position, Text, IntWrit
         String key1 = workYear+"_"+city+"_"+position;
         k.set(key1);
 
-        System.out.println("Mapper-key:"+key1);
         context.write(k,v); //text(string)  int
     }
 }

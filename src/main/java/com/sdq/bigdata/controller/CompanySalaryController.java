@@ -28,6 +28,9 @@ import java.util.Objects;
 @Controller
 public class CompanySalaryController {
 
+//    @Autowired
+
+
     @Autowired
     CompanySalaryService companySalaryService;
 

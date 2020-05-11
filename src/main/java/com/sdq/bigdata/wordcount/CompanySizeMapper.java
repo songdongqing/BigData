@@ -27,7 +27,6 @@ public class CompanySizeMapper extends Mapper<LongWritable, Position, Text, IntW
         String key1 = companySize+"_"+city;
         k.set(key1);
 
-        System.out.println("Mapper-key:"+key1);
         context.write(k,v); //text(string)  int
     }
 

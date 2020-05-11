@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 @Data
-public class Position implements DBWritable, Writable {
+public class Position implements DBWritable, Writable ,Comparable{
     private String id;
 
     private Date lastLogin;
@@ -157,5 +157,15 @@ public class Position implements DBWritable, Writable {
 
 //        name = rs.getString(2);
 //        txt = rs.getString(3);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Position){
+                return this.positionId.compareTo(((Position) o).positionId);
+        }else{
+            new RuntimeException("类型错误！");
+        }
+       return -1;
     }
 }

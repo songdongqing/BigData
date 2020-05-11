@@ -19,7 +19,7 @@ public class SkillReducer extends TableReducer<Text, IntWritable, ImmutableBytes
                           Context context)
             throws IOException, InterruptedException {
 
-        System.out.println("Mapper:"+key);
+
         //skill_广州_数据分析  1
         String[] split = key.toString().split("_");
         String skillLables = split[0];
